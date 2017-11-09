@@ -1,26 +1,29 @@
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
  * This is the key that will be used per round. It will be implemented using 128/192/256-bits
  */
 public class Key {
+    private byte[] key;
     private int n;
     private int bytemax=0;
     private int wordmax=0;
-    private Word Rcon;
-    private void setRcon(int i)
+    private byte[] Rcon;
+    private void setRcon()
     {
-        Byte filler=0x00;
-        if(i==1)
+        Byte b = 0x01;
+        Rcon[0] = b;
+        Rcon[1] = 0x00;
+        Rcon[2] = 0x00;
+        Rcon[3] = 0x00;
+        int temp=0;
+        int j=1;
+        while(b!=0xFF)
         {
-            Byte b=0x01;
-            Rcon.add(i,b,filler,filler,filler);
+            temp=((int) Rcon[4 * j - 4])*2;
+            Rcon[4^j]=(byte)temp;
         }
-        //else
-        //{
-         //   Rcon.
-        //}
-
     }
     private void set(int n1)
     {
@@ -40,18 +43,43 @@ public class Key {
         set(n);
     }
 
-    public void ExpandKey(Byte key[], Word w[])
+    public byte[] RotWord(byte[] w1)
     {
-        for (int i=0; i<4; i++)
+        BigInteger bigInt = new BigInteger(w1);
+        BigInteger shiftInt = bigInt.shiftLeft(4);
+        return shiftInt.toByteArray();
+    }
+
+    public byte[] xor(byte w1[], byte w2[])
+    {
+        byte[] xoredword = new byte[w1.length];
+        int i = 0;
+        for (byte b : w1)
+            xoredword[i]= (byte) (b ^ w2[i++]);
+        return xoredword;
+    }
+
+    public byte[] SubWord(byte w[]) {
+        return new byte[0];
+    }
+
+    public byte[] ExpandKey(int n, String keyword) //keyword must be the first word (4 bytes)
+    {
+        for(int j=0;j<=keyword.length();j=j+4)  //if failed must be length-1 since includes /n
         {
-            w[i].add(i,key[4*i],key[4*i+1],key[4*i+2],key[4*i+3]);
+            key[j]= ((byte) keyword.codePointCount(j, j+3));
         }
-        for(int i=4;i<wordmax; i++)
+        if (n==0)
+            return key;
+        else
         {
-            Word temp=w[i-1];
-            //if(i%4==0)
-                //temp=xor(SubWord(RotWord(temp),Rcon[i/4]);
-            //w[i]=xor(temp,w[i-4]);
+            /*for (int i = 32; i < wordmax; i++) {
+                byte[] temp = key[4 * i - 4];
+                if (i % 4 == 0)
+                    temp = xor(SubWord(RotWord(temp)), Rcon[i / 4]);
+                w[i] = xor(temp, w[i - 4]);
+            }*/
         }
+        return key;
     }
 }
