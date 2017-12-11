@@ -10,6 +10,9 @@ public class AES{
 		keySize=n;
 	}
 
+	public AES(String s, String text) {
+	}
+
 	// creates structured text
 	private void setText(String text){
 
@@ -146,13 +149,16 @@ public class AES{
             max=11;
         else max=13;
 		for(int i=0;i<max;i++){
-			
+
+			System.out.print("Round " + i + ":\n");
+			//System.out.print(key.getKey(i,3)+ "\n");
+			System.out.print("Cipher: ");
 			this.addRoundKey(i);
-			this.print();
+			//this.print();
 			this.subBytes();
-			this.print();
+			//this.print();
 			this.shiftRows();
-			this.print();
+			//this.print();
 			this.mixColumns();
 			this.print();
 		}
@@ -161,6 +167,10 @@ public class AES{
 		this.subBytes();
 		this.shiftRows();
 		this.addRoundKey(max+1);
+        System.out.print("Round " + max + ":\n");
+        //System.out.print(key.getKey(max,3)+ "\n");
+        System.out.print("Cipher: ");
+        this.print();
 
 		return this.toString();
 		
