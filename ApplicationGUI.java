@@ -3,6 +3,9 @@ import javax.crypto.SecretKey;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
@@ -15,7 +18,9 @@ public class ApplicationGUI {
     private JButton generateButton;
     private JLabel CharactersLabel;
     private JLabel CharactersKeyLabel;
-
+    private boolean isHex(String cadena) {
+        return cadena.matches("-?[0-9a-fA-F]+");
+    }
     private String generateKey(int max) throws NoSuchAlgorithmException {
         KeyGenerator gen = KeyGenerator.getInstance("AES");
         gen.init(max); /* 128-bit or 192 or 256 */
@@ -48,7 +53,7 @@ public class ApplicationGUI {
                     max=256;
                 }
                 if(max==128 && textField2.getText().length()==32) {
-                    if(textField2.getText().contains("A") || textField2.getText().contains("B") || textField2.getText().contains("C") || textField2.getText().contains("D") || textField2.getText().contains("E") || textField2.getText().contains("F")) {
+                    if(isHex(textField2.getText())) {
                         AES aes = new AES(toHex(textField1.getText()), textField2.getText(), max);
                         JOptionPane.showMessageDialog(null, separate(aes.encrypt(toHex(textField1.getText()), textField2.getText())));
                     }
@@ -75,7 +80,7 @@ public class ApplicationGUI {
                 }
                 else if(max==192 && textField2.getText().length()==48)
                 {
-                    if(textField2.getText().contains("A") || textField2.getText().contains("B") || textField2.getText().contains("C") || textField2.getText().contains("D") || textField2.getText().contains("E") || textField2.getText().contains("F")) {
+                    if(isHex(textField2.getText())) {
                         AES aes = new AES(toHex(textField1.getText()), textField2.getText(), max);
                         JOptionPane.showMessageDialog(null, separate(aes.encrypt(toHex(textField1.getText()), textField2.getText())));
                     }
@@ -83,7 +88,7 @@ public class ApplicationGUI {
                 }
                 else if(max==256 && textField2.getText().length()==64)
                 {
-                    if(textField2.getText().contains("A") || textField2.getText().contains("B") || textField2.getText().contains("C") || textField2.getText().contains("D") || textField2.getText().contains("E") || textField2.getText().contains("F")) {
+                    if(isHex(textField2.getText())) {
                         AES aes = new AES(toHex(textField1.getText()), textField2.getText(), max);
                         JOptionPane.showMessageDialog(null, separate(aes.encrypt(toHex(textField1.getText()), textField2.getText())));
                     }
@@ -163,5 +168,23 @@ public class ApplicationGUI {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        String FILEPATH=JOptionPane.showInputDialog(null,"Please enter the output folder path desired as follows C:\\Users\\yourUser\\Desktop\\");
+
+        try {
+            if(FILEPATH.endsWith("\\")) {
+                PrintStream myconsole = new PrintStream(new File(FILEPATH.concat("AES_Output.txt")));
+                System.setOut(myconsole);
+                myconsole.println("AES Output");
+            }
+            else {
+                PrintStream myconsole = new PrintStream(new File(FILEPATH.concat("\\AES_Output.txt")));
+                System.setOut(myconsole);
+                myconsole.println("AES Output");
+            }
+        }
+        catch (FileNotFoundException fx)
+        {
+            System.out.println(fx);
+        }
     }
 }
