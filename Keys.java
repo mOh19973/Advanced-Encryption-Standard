@@ -11,6 +11,8 @@ public class Keys{
 
 		this.setKeys(key.toLowerCase(),n);
 		this.expandKey(n);
+		System.out.println("Expanded Key:");
+		this.print(n);
 	}
 
 	static{
@@ -93,7 +95,6 @@ public class Keys{
 				}
 			}
 		}
-
 	}
 
 	// get key reference
