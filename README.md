@@ -2,6 +2,7 @@
 Implementation of AES-128, AES-192, and AES-256.
 
 Group 17: Mohamad Alhalabi - 201602472
+
           Hussein Itawi    - 201600112
           
  The software shows the results for each round separately and the key expansion for each round separately.
