@@ -150,24 +150,35 @@ public class AES{
         else max=13;
 		for(int i=0;i<max;i++){
 
-			System.out.print("Round " + i + ":\n");
+			System.out.println("Round " + i + ":");
 			//System.out.print(key.getKey(i,3)+ "\n");
-			System.out.print("Cipher: ");
+			System.out.print("Add Round Key: ");
 			this.addRoundKey(i);
-			//this.print();
+			this.print();
 			this.subBytes();
-			//this.print();
+			System.out.print("Substitute Bytes: ");
+			this.print();
 			this.shiftRows();
-			//this.print();
+            System.out.print("Shift Rows: ");
+			this.print();
 			this.mixColumns();
+            System.out.print("Mix Columns: ");
 			this.print();
 		}
-
+        System.out.println("Round " + max + ":");
 		this.addRoundKey(max);
+        System.out.print("Add Round Key:");
+        this.print();
 		this.subBytes();
+        System.out.print("Substitute Bytes: ");
+		this.print();
+        System.out.print("Shift Rows: ");
 		this.shiftRows();
+		this.print();
+        System.out.println("Round "+ (max+1) + ":");
 		this.addRoundKey(max+1);
-        System.out.print("Round " + max + ":\n");
+        System.out.print("Add Round Key: ");
+		this.print();
         //System.out.print(key.getKey(max,3)+ "\n");
         System.out.print("Cipher: ");
         this.print();
